@@ -1,0 +1,166 @@
+# Enabling oh-my-zsh as described here: https://aur.archlinux.org/packages/oh-my-zsh-git/
+
+# Same as in ~/.bashrc:
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Use vim keys in zsh, using "bindkey -v":
+bindkey -v
+
+alias ls='ls --color=auto'
+#PS1='[\u@\h \W]\$ '
+
+# Same as in .bashrc: If login-shell, return here - DISABLED BECAUSE TMUX ONLY STARTS LOGIN-SHELL!
+#[[ -o login ]] && return
+
+# ===========================================
+# Host-specific config (TODO: create error-function):
+# ===========================================
+DOTDIR="$HOME/dotfiles"
+[ ! -d "$DOTDIR" ] && echo "ERROR: Directory \"$DOTDIR\" does not exist!" >/dev/stderr
+hostname >/dev/null 2>&1 ; [[ "$?" -eq 127 ]] && echo 'ERROR: "hostname" not found, it is provided by "yay -S inetutils"' >/dev/stderr
+SHELLDIR="$DOTDIR/shell"
+[ ! -d "$SHELLDIR" ] && echo "ERROR: Directory \"$SHELLDIR\" does not exist!" >/dev/stderr
+#file="$SHELLDIR/$(hostname).zsh"
+#[[ -f "$file" ]] && source "$file" || echo "ERROR: \"$file\" does not exist!" >/dev/stderr
+# Shared stuff (zsh+bash):
+file="$SHELLDIR/bashZsh_common.sh"
+[[ -f "$file" ]] && source "$file" || echo "ERROR: \"$file\" does not exist!" >/dev/stderr
+# ===========================================
+
+# ====================================================
+autoload -Uz compinit promptinit
+compinit
+promptinit
+
+# WARNING: DO NOT SET PROMPT - OR THEMES DO NOT WORK!
+# This will set the default prompt to the walters theme
+# Type: "prompt -l" to see different prompts
+#prompt adam1
+#prompt walters
+
+# =====================================================
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _complete _ignored
+zstyle :compinstall filename '/home/mfj/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+
+HISTFILE=~/.histfile
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+# You need to set both HISTSIZE and SAVEHIST. They indicate how many
+# lines of history to keep in memory and how many lines to keep in the
+# history file, respectively.
+
+
+# === This shows branch to the right ===
+# autoload -Uz vcs_info
+# precmd_vcs_info() { vcs_info }
+# precmd_functions+=( precmd_vcs_info )
+# setopt prompt_subst
+# RPROMPT=\$vcs_info_msg_0_
+# # PROMPT=\$vcs_info_msg_0_'%# '
+# zstyle ':vcs_info:git:*' formats '%b'
+
+
+# --- From: https://wiki.archlinux.org/index.php/Zsh ---
+# Fish provides a very powerful shell syntax highlighting. To use this
+# in Zsh, you can install zsh-syntax-highlighting from offical
+# repository and add following to your zshrc:
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if true; then #true; then #true; then
+    # Avoid: "WARNING! Your terminal appears to support fewer than 256
+    # colors!":
+    export TERM="xterm-256color"
+
+    # *** Powerlevel 9K ***
+    # https://github.com/Powerlevel9k/powerlevel9k/wiki/Install-Instructions#arch-linux
+    #POWERLEVEL9K_MODE='awesome-fontconfig' # Very nice!
+    #POWERLEVEL9K_MODE='awesome-patched' # ??? NOT WORKING!!! yay -S awesome-terminal-fonts-patched
+    #POWERLEVEL9K_MODE='nerdfont-complete' # Very nice!
+    #source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme
+
+    # *** Powerlevel 10K ***
+    #https://github.com/romkatv/powerlevel10k/blob/master/README.md#arch-linux
+    # ===============
+    # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+    # Initialization code that may require console input (password prompts, [y/n]
+    # confirmations, etc.) must go above this block; everything else may go below.
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+      source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
+    # Quiet - avoid warning when starting zsh, read more: https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt
+    typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+    # ===============
+
+    #POWERLEVEL10K_MODE='awesome-fontconfig' # Very nice!
+    #POWERLEVEL10K_MODE='awesome-patched' # ??? NOT WORKING!!! yay -S awesome-terminal-fonts-patched
+    POWERLEVEL10K_MODE='nerdfont-complete' # Very nice!
+
+    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+    source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+
+else
+    # ZSH plugins: https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
+    # if true; then #true; then # use oh-my-zsh:
+    export ZSH=/usr/share/oh-my-zsh
+    plugins=(
+        archlinux
+        colored-man-pages
+        docker
+        colorize
+        tig
+        git
+        github
+        git-prompt
+        zsh-interactive-cd.plugin.zsh
+        fzf
+        command-not-found
+        git-extras
+        colored-man-pages
+    )
+    # Maybe consider: 
+    # zsh-navigation-tools zsh-interactive-cd.plugin.zsh last-working-dir
+    # zsh-autosuggestions dirhistory
+    
+    # ZSH_THEME: ONLY for oh-my-zsh - /usr/share/oh-my-zsh/themes/[THEME-NAME-HERE].zsh-theme:
+    ZSH_THEME="random"
+    ### TESTING: DELETE THIS#ZSH_THEME="emotty"
+    #ZSH_THEME="agnoster"
+    #ZSH_THEME="jonathan"
+
+    # NB: powerlevel10k doesn't seem to work?:
+    #ZSH_THEME=powerlevel10k/powerlevel10k
+    #ZSH_THEME=/usr/share/zsh-theme-powerlevel10k
+
+    source $ZSH/oh-my-zsh.sh
+fi
+
+# https://wiki.archlinux.org/index.php/Fzf#Shells
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+
+
+# ====== commented out - /home/martin/Downloads/a/pythonocc-demos/examples - below added by "conda init"! ===
+# # >>> conda initialize >>>
+# # !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('/usr/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/usr/etc/profile.d/conda.sh" ]; then
+#         . "/usr/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/usr/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# # <<< conda initialize <<<
+# 
