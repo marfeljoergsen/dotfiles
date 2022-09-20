@@ -1,0 +1,42 @@
+# ~/.bashrc
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Use vim keys in bash/zsh using "set -o vi":
+set -o vi
+
+# If login-shell, return here - DISABLED BECAUSE TMUX ONLY STARTS LOGIN-SHELL!
+#[[ -o login ]] && return
+
+# (hint: ~/.dircolors can be helpful)
+# export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
+
+export TERM=xterm-color
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+alias less='less --RAW-CONTROL-CHARS'
+alias grep='grep --color=auto'
+alias ls='ls --color=auto'
+
+PS1='[\u@\h \W]\$ '
+
+# ===========================================
+# Host-specific config (TODO: create error-function):
+# ===========================================
+DOTDIR="$HOME/dotfiles"
+[ ! -d "$DOTDIR" ] && echo "ERROR: Directory \"$DOTDIR\" does not exist!" >/dev/stderr
+hostname >/dev/null 2>&1 ; [[ "$?" -eq 127 ]] && echo 'ERROR: "hostname" not found, it is provided by "yay -S inetutils"' >/dev/stderr
+SHELLDIR="$DOTDIR/shell"
+[ ! -d "$SHELLDIR" ] && echo "ERROR: Directory \"$SHELLDIR\" does not exist!" >/dev/stderr
+file="$SHELLDIR/$(hostname).bash"
+[[ -f "$file" ]] && source "$file" || echo "ERROR: \"$file\" does not exist!" >/dev/stderr
+# Shared stuff (zsh+bash):
+file="$SHELLDIR/bashZsh_common.sh"
+[[ -f "$file" ]] && source "$file" || echo "ERROR: \"$file\" does not exist!" >/dev/stderr
+# ===========================================
+
+# FZF: https://wiki.archlinux.org/index.php/Fzf#Shells
+source /usr/share/fzf/key-bindings.bash
+source /usr/share/fzf/completion.bash
