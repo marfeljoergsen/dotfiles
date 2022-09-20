@@ -1,0 +1,3 @@
+Missing: Copy /usr/share/awesome/themes/ to ./themes such that rc.lua can
+reference them correctly and such that it's easy to modify/experiment with
+themes without root permission.
