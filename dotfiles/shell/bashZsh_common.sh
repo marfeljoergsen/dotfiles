@@ -44,7 +44,7 @@ n ()
     # stty lnext undef
     # --- nnn option "-A" means avoid auto-entering directories with a single match
     #     See more: https://github.com/jarun/nnn/wiki/Concepts
-    nnn -A "$@"
+    nnn -H -A "$@"
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
             rm -f "$NNN_TMPFILE" > /dev/null
