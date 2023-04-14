@@ -1,4 +1,22 @@
+# Enable vim keys:
+# Bash:
+set -o vi
+# ZSH:
+bindkey -v
 
+# If you use oh-my-zsh, you can enhance your zsh Vim experience with the vi-mode
+# plugin which sits on tops of the built-in vi mode and improves it with
+# additional key bindings and an improved command prompt that tells you when
+# you’re in Normal mode.
+# 
+# In order to activate this plugin, update the plugins section of yhour .zshrc
+# file like so:
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+#plugins=(
+#  vi-mode
+#)
 
 export TERM=xterm-color
 export CLICOLOR=1
@@ -17,6 +35,9 @@ alias cdf='cd $(dirname $(fzf))'
 alias cdd='cd $(find . -type d | fzf)'
 alias vedit='vim $(fzf)'
 alias nvedit='nvim $(fzf)'
+
+# For git alias see: https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
+
 # make "nnn"/"n" work with MC, under zsh as main shell (WARNING: This has
 #   nothing to do with missing subshell or issues with CTRL+O terminal):
 #alias mc='SHELL="/usr/bin/bash -c source ~/bashZsh_source_shell.sh" mc'
@@ -55,7 +76,6 @@ n ()
 
 
 # --- Lazygit - change directory on exit + shortcut:
-
 setwork() {
     if [ -z "$ttasks" ]; then
         echo "ERROR: \"\$ttasks\" environment variable/directory isn''t set..."
@@ -102,6 +122,7 @@ export FZF_DEFAULT_COMMAND='find .'
 # WARNING: "neofetch" can cause subterminal issues with "MC" / midnight commander!
 # if hostname is alien, use "pfetch" instead of "neofetch"!
 #pfetch
+#neofetch
 [[ $(realpath /proc/$PPID/exe) == */bin/mc ]] || neofetch
 
 echo '  --- Aliases or useful exports starts: ---'
