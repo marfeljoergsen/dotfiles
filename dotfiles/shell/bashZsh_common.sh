@@ -4,6 +4,10 @@ set -o vi
 # ZSH:
 bindkey -v
 
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+source $SCRIPTPATH/transfer.sh
+
 # If you use oh-my-zsh, you can enhance your zsh Vim experience with the vi-mode
 # plugin which sits on tops of the built-in vi mode and improves it with
 # additional key bindings and an improved command prompt that tells you when
