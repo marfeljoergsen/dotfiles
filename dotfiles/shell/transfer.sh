@@ -1,6 +1,7 @@
 # NB: Also consider https://tmate.io/ - Instant terminal sharing for easy copy/paste
 
 # https://github.com/dutchcoders/transfer.sh#bash-and-zsh-with-delete-url-delete-token-output-and-prompt-before-uploading
+#echo ' --- enabling transfer() ---'
 transfer()
 {
     local file

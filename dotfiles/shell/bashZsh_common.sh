@@ -1,12 +1,15 @@
-# Enable vim keys:
-# Bash:
-set -o vi
-# ZSH:
-bindkey -v
+#echo "bashZsh_common.sh is running!"
 
-SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-
-source $SCRIPTPATH/transfer.sh
+if [ "$shell" = "zsh" ]; then
+    SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+elif [ "$shell" = "bash" ]; then
+    SCRIPTPATH=$(dirname "$BASH_SOURCE")
+else
+    >&2 echo "ERROR: Shell is neither bash, nor zsh - this won't work..."
+    return
+fi
+#echo "$SCRIPTPATH/transfer.sh"
+source "$SCRIPTPATH/transfer.sh"
 
 # If you use oh-my-zsh, you can enhance your zsh Vim experience with the vi-mode
 # plugin which sits on tops of the built-in vi mode and improves it with
